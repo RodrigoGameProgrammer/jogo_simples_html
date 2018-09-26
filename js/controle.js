@@ -64,8 +64,6 @@ function gameLoop()
 	//Desenha a nova posição da barra
 	ctx.fillRect(barraPosX, canvas.height - barraAltura, barraLargura, barraAltura);
 	
-	//Desenha a bola
-	
 	//Verifica se o array está vazio e cria um novo objeto dentro dele se estiver
 	
 	if(bolas.length <= 0)
@@ -105,6 +103,7 @@ function gameLoop()
 	{
 		bola.bolaPosY = -10;
 		alert("DERROTA \nTotal de pontos:" + pontosJogador);
+		pontosJogador = 0;
 
 	}
 		ctx.font = "32pt Tahoma";
