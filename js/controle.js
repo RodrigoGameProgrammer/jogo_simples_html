@@ -7,6 +7,10 @@ var barraAltura;
 var barraLargura;
 var pontosJogador;
 
+var direitaPressionado = false;
+var	esquerdaPressionado = false;
+
+
 //Variaveis da bola
 
 var bolas;
@@ -34,7 +38,7 @@ function inicializar()
 	
 	//Velocidade e posição(inicial) da barra
 	
-	barraVel = 20;         
+	barraVel = 10;         
 	barraPosX = (canvas.width - barraLargura) / 2;
 	
 	//Criando as bolas
@@ -47,7 +51,8 @@ function inicializar()
 	
 	//Comando para que o javascript fique de olho se alguma tecla foi pressionada
 	
-	document.addEventListener('keydown', keyDown);
+	document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
 	
 	//Loop que vai fazer a atualização de frames para movimentação dos objetos em tela
 	
@@ -71,6 +76,13 @@ function gameLoop()
     bolas.push(new bola());
 	}
 	
+	//movimenta barra
+	if(direitaPressionado && barraPosX < canvas.width-barraLargura){
+		barraPosX += barraVel;
+	}
+	else if(esquerdaPressionado && barraPosX > 0) {
+		barraPosX -=  barraVel;
+	}
 	//Desenha a bola
 	
 	bolas.forEach(function(bola, indice)
@@ -126,7 +138,7 @@ function bola()
 	this.bolaPosX =  Math.random() * 600;
 	this.bolaPosY = -10;
 	//this.bolaDiametro = 10;
-	this.bolaVel = 10;
+	this.bolaVel = 4;
 	//this.bolaVel = Math.random() * (10 - 6) + 6; velocidade random
 	this.colisao = false;
 }
@@ -160,23 +172,26 @@ function colideBola()
 	ctx.fillText(pontosJogador, canvas.width - 70, 50);
 }*/
 
-//Função que verifica a tecla e move a barra
-
-function keyDown(e)
-{
+//Função que verifica a tecla e move a barra	
+function keyDownHandler(e){
 	if (e.keyCode == 37 || e.keyCode == 65)
 	{
-		if(barraPosX > 0)
-		{
-			barraPosX -= barraVel;
-		}	
+		esquerdaPressionado = true;
 	}
-	
-	if (e.keyCode == 39 || e.keyCode == 68)
+	else if (e.keyCode == 39 || e.keyCode == 68)
 	{
-		if (barraPosX < (canvas.width - barraLargura))
-		{
-			barraPosX += barraVel;
-		}		
+		direitaPressionado = true;	
 	}
 }
+
+function keyUpHandler(e){
+	if (e.keyCode == 37 || e.keyCode == 65)
+	{
+		esquerdaPressionado = false;
+	}
+	else if (e.keyCode == 39 || e.keyCode == 68)
+	{
+		direitaPressionado = false;	
+	}
+}
+	inicializar(); 
